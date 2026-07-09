@@ -1,0 +1,22 @@
+enabled: true
+
+# OAuth callback server — must be reachable from the player's browser
+oauth:
+  port: 8765
+  callback-path: /callback
+  external-url: "" # e.g. https://mc.example.com:8765 — leave blank to use localhost
+
+# Publication settings — auto-created on first publish if missing
+publication:
+  auto-create: true
+  default-name: "{player}'s Minecraft Books"
+  default-url: "" # Defaults to oauth.external-url
+
+# Book limits — extended beyond vanilla (50 pages, 256 chars/page)
+books:
+  max-pages: 100
+  max-chars-per-page: 1024
+  auto-publish-on-sign: false
+
+# bStats metrics
+bstats-enabled: true

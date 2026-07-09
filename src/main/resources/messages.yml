@@ -1,0 +1,57 @@
+prefix: "<gradient:blue:aqua>StandardBooks</gradient> <dark_gray>»</dark_gray> "
+
+login:
+  prompt: "<yellow>Click to login to AT Protocol:</yellow> <click:open_url:'{url}'><blue><underlined>{url}</underlined></click>"
+  success: "<green>Logged in as {handle}!</green>"
+  failure: "<red>Login failed: {error}</red>"
+  already-logged-in: "<yellow>Already logged in as {handle}. Use /sb logout to disconnect.</yellow>"
+  not-logged-in: "<red>Not logged in. Use /sb login <handle> to connect.</red>"
+
+publish:
+  success: "<green>Published '{title}' to AT Protocol!</green> <gray>({uri})</gray>"
+  no-book: "<red>You must be holding a written book to publish.</red>"
+  empty-book: "<red>The book is empty.</red>"
+  failure: "<red>Failed to publish: {error}</red>"
+  no-publication: "<red>No publication found. Publishing will be attempted automatically.</red>"
+
+browse:
+  title: "<dark_blue>StandardBooks Browser</dark_blue>"
+  empty: "<gray>No books found.</gray>"
+  next-page: "<green>Next Page</green>"
+  prev-page: "<green>Previous Page</green>"
+  page-info: "<gray>Page {page}/{pages}</gray>"
+
+read:
+  not-found: "<red>Book not found: {uri}</red>"
+  failure: "<red>Failed to fetch book: {error}</red>"
+
+logout:
+  success: "<green>Logged out successfully.</green>"
+
+status:
+  header: "<gradient:blue:aqua>StandardBooks Status</gradient>"
+  logged-in: "<green>Logged in as: {handle} ({did})</green>"
+  logged-out: "<red>Not logged in</red>"
+  books-published: "<gray>Books published: {count}</gray>"
+
+help:
+  header: "<gradient:blue:aqua>StandardBooks Help</gradient>"
+  login: "<gray>/sb login <handle></gray> <dark_gray>— Connect your AT Protocol account</dark_gray>"
+  logout: "<gray>/sb logout</gray> <dark_gray>— Disconnect your account</dark_gray>"
+  publish: "<gray>/sb publish</gray> <dark_gray>— Publish the book you're holding</dark_gray>"
+  browse: "<gray>/sb browse</gray> <dark_gray>— Browse published books</dark_gray>"
+  read: "<gray>/sb read <uri></gray> <dark_gray>— Read a book by its AT URI</dark_gray>"
+  list: "<gray>/sb list</gray> <dark_gray>— List your published books</dark_gray>"
+  delete: "<gray>/sb delete <uri></gray> <dark_gray>— Delete a published book</dark_gray>"
+  update: "<gray>/sb update <uri></gray> <dark_gray>— Update a book with the one you're holding</dark_gray>"
+  status: "<gray>/sb status</gray> <dark_gray>— Show your connection status</dark_gray>"
+  help: "<gray>/sb help</gray> <dark_gray>— Show this help</dark_gray>"
+  reload: "<gray>/sb reload</gray> <dark_gray>— Reload config (admin)</dark_gray>
+
+delete:
+  success: "<green>Deleted book from AT Protocol!</green> <gray>({uri})</gray>"
+  failure: "<red>Failed to delete book: {error}</red>"
+
+update:
+  success: "<green>Updated book on AT Protocol!</green> <gray>({uri})</gray>"
+  failure: "<red>Failed to update book: {error}</red>""

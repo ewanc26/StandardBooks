@@ -1,0 +1,12 @@
+name: StandardBooks
+version: '0.1.0'
+main: uk.ewancroft.standardbooks.StandardBooksPlugin
+api-version: '1.21'
+description: Publish and read in-game books on the AT Protocol via Standard.site.
+author: ewanc26
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false

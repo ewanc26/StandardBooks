@@ -1,0 +1,90 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '2.3.21'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.3.21'
+    id 'com.gradleup.shadow' version '9.4.3'
+}
+
+group = 'uk.ewancroft'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        url = 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:26.1.2.build.72-stable"
+
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.3.21'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'
+    implementation 'io.github.kikin81.atproto:runtime:9.7.1'
+    implementation 'io.github.kikin81.atproto:models:9.7.1'
+    implementation 'io.github.kikin81.atproto:oauth:9.7.1'
+    implementation 'io.ktor:ktor-server-core:3.1.2'
+    implementation 'io.ktor:ktor-server-netty:3.1.2'
+    implementation 'io.ktor:ktor-client-core:3.1.2'
+    implementation 'io.ktor:ktor-client-cio:3.1.2'
+    implementation 'io.ktor:ktor-client-content-negotiation:3.1.2'
+    implementation 'io.ktor:ktor-serialization-kotlinx-json:3.1.2'
+    implementation 'org.bstats:bstats-bukkit:3.1.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test:2.3.21'
+    testImplementation "io.papermc.paper:paper-api:26.1.2.build.72-stable"
+    testImplementation 'net.kyori:adventure-api:4.20.0'
+    testImplementation 'net.kyori:adventure-text-minimessage:4.20.0'
+}
+
+kotlin {
+    jvmToolchain(26)
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(26))
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = '25'
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+}
+
+shadowJar {
+    archiveBaseName = 'StandardBooks'
+    archiveVersion = project.version
+
+    relocate 'org.bstats', 'uk.ewancroft.standardbooks.libs.bstats'
+
+    exclude 'org/bukkit/**'
+    exclude 'org/papermc/**'
+    exclude 'net/kyori/**'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/maven/**'
+    exclude 'META-INF/versions/**'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+build.dependsOn shadowJar
+clean { delete 'build' }
