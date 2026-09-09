@@ -54,4 +54,4 @@ delete:
 
 update:
   success: "<green>Updated book on AT Protocol!</green> <gray>({uri})</gray>"
-  failure: "<red>Failed to update book: {error}</red>""
+  failure: "<red>Failed to update book: {error}</red>"

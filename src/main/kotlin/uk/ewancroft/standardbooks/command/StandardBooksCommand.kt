@@ -384,7 +384,7 @@ class StandardBooksCommand(
         }
 
         val atUri = try {
-            AtUri.parse(uri)
+            AtUri.parse(uri).requireDocumentFor(session.did)
         } catch (e: Exception) {
             player.sendMessage(plugin.messages.prefixed("read.not-found", "uri" to uri))
             return
@@ -442,7 +442,7 @@ class StandardBooksCommand(
         }
 
         val atUri = try {
-            AtUri.parse(uri)
+            AtUri.parse(uri).requireDocumentFor(session.did)
         } catch (e: Exception) {
             player.sendMessage(plugin.messages.prefixed("read.not-found", "uri" to uri))
             return

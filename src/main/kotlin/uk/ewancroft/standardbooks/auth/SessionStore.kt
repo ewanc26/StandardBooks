@@ -45,8 +45,9 @@ class SessionStore(private val dataFolder: File) {
             sessions.clear()
             sessions.putAll(loaded)
         } catch (e: Exception) {
-            // Corrupt or incompatible — start fresh
-            sessionsFile.delete()
+            // Keep the evidence for an administrator; never destroy potentially
+            // recoverable encrypted state merely because it failed to decode.
+            System.err.println("StandardBooks: could not load encrypted sessions (${e.javaClass.simpleName})")
         }
     }
 

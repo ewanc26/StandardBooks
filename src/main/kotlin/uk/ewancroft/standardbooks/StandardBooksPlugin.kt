@@ -1,6 +1,8 @@
 package uk.ewancroft.standardbooks
 
 import org.bukkit.plugin.java.JavaPlugin
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlin.coroutines.CoroutineContext
 import org.bstats.bukkit.Metrics
 import uk.ewancroft.standardbooks.atproto.AtProtoClient
 import uk.ewancroft.standardbooks.auth.AuthManager
@@ -15,6 +17,13 @@ import uk.ewancroft.standardbooks.listener.BookListener
 import uk.ewancroft.standardbooks.message.Messages
 
 class StandardBooksPlugin : JavaPlugin() {
+
+    /** Dispatcher that returns Bukkit API work to Paper's server thread. */
+    val serverDispatcher: CoroutineDispatcher = object : CoroutineDispatcher() {
+        override fun dispatch(context: CoroutineContext, block: Runnable) {
+            if (isEnabled) server.scheduler.runTask(this@StandardBooksPlugin, block)
+        }
+    }
 
     lateinit var config: PluginConfig
         private set
@@ -94,9 +103,9 @@ class StandardBooksPlugin : JavaPlugin() {
     }
 
     override fun onDisable() {
-        oauthServer?.stop()
-        authManager?.close()
-        atProtoClient?.close()
+        if (::oauthServer.isInitialized) oauthServer.stop()
+        if (::authManager.isInitialized) authManager.close()
+        if (::atProtoClient.isInitialized) atProtoClient.close()
         metrics?.shutdown()
         placeholderExpansion?.unregister()
         logger.info("StandardBooks disabled.")
