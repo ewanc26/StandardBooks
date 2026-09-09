@@ -10,12 +10,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.cancel
 import uk.ewancroft.standardbooks.StandardBooksPlugin
 import uk.ewancroft.standardbooks.gui.BrowseGui
 import uk.ewancroft.standardbooks.book.BookConverter
 
 class BookListener(private val plugin: StandardBooksPlugin) : Listener {
     private val scope = CoroutineScope(Dispatchers.IO)
+
+    fun close() {
+        scope.cancel()
+    }
 
     private val serializer = PlainTextComponentSerializer.plainText()
 

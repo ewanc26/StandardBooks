@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.cancel
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
@@ -26,6 +27,10 @@ class StandardBooksCommand(
 ) : CommandExecutor, TabCompleter {
 
     private val scope = CoroutineScope(Dispatchers.IO)
+
+    fun close() {
+        scope.cancel()
+    }
 
     private val subcommands = listOf(
         "login", "logout", "publish", "browse", "read", "list", "delete", "update", "status", "help", "reload"
