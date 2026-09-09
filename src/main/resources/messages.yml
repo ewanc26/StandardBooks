@@ -42,11 +42,11 @@ help:
   browse: "<gray>/sb browse</gray> <dark_gray>— Browse published books</dark_gray>"
   read: "<gray>/sb read <uri></gray> <dark_gray>— Read a book by its AT URI</dark_gray>"
   list: "<gray>/sb list</gray> <dark_gray>— List your published books</dark_gray>"
-  delete: "<gray>/sb delete <uri></gray> <dark_gray>— Delete a published book</dark_gray>"
+  delete: "<gray>/sb delete <uri></gray> <dark_gray>— Delete a book you've published</dark_gray>"
   update: "<gray>/sb update <uri></gray> <dark_gray>— Update a book with the one you're holding</dark_gray>"
   status: "<gray>/sb status</gray> <dark_gray>— Show your connection status</dark_gray>"
   help: "<gray>/sb help</gray> <dark_gray>— Show this help</dark_gray>"
-  reload: "<gray>/sb reload</gray> <dark_gray>— Reload config (admin)</dark_gray>
+  reload: "<gray>/sb reload</gray> <dark_gray>— Reload config (admin)</dark_gray>"
 
 delete:
   success: "<green>Deleted book from AT Protocol!</green> <gray>({uri})</gray>"
@@ -54,4 +54,4 @@ delete:
 
 update:
   success: "<green>Updated book on AT Protocol!</green> <gray>({uri})</gray>"
-  failure: "<red>Failed to update book: {error}</red>""
+  failure: "<red>Failed to update book: {error}</red>"
