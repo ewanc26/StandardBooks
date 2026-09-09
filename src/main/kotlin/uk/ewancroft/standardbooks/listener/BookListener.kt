@@ -10,12 +10,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.cancel
 import uk.ewancroft.standardbooks.StandardBooksPlugin
 import uk.ewancroft.standardbooks.gui.BrowseGui
 import uk.ewancroft.standardbooks.book.BookConverter
 
 class BookListener(private val plugin: StandardBooksPlugin) : Listener {
     private val scope = CoroutineScope(Dispatchers.IO)
+
+    fun close() {
+        scope.cancel()
+    }
 
     private val serializer = PlainTextComponentSerializer.plainText()
 
@@ -79,12 +84,12 @@ class BookListener(private val plugin: StandardBooksPlugin) : Listener {
         scope.launch {
             try {
                 val result = plugin.atProtoClient.createDocument(session, document)
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     val title = meta.title()?.let { serializer.serialize(it) } ?: "Untitled"
                     player.sendMessage(plugin.messages.prefixed("publish.success", "title" to title, "uri" to result.uri))
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed("publish.failure", "error" to (e.message ?: "Unknown error")))
                 }
             }
