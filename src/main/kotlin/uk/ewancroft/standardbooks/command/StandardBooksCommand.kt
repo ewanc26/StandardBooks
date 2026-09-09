@@ -89,7 +89,7 @@ class StandardBooksCommand(
                 val callbackDeferred = plugin.oauthServer.expectCallback(auth.state)
 
                 // Send auth URL to player
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.get(
                         "login.prompt",
                         "url" to auth.authUrl
@@ -100,7 +100,7 @@ class StandardBooksCommand(
                 val callback = withTimeoutOrNull(300_000L) { callbackDeferred.await() }
                 if (callback == null) {
                     plugin.oauthServer.cancelCallback(auth.state)
-                    withContext(Dispatchers.Main) {
+                    withContext(plugin.serverDispatcher) {
                         player.sendMessage(plugin.messages.prefixed("login.failure", "error" to "Login timed out"))
                     }
                     return@launch
@@ -110,14 +110,14 @@ class StandardBooksCommand(
                 val newSession = plugin.authManager.completeAuthorization(identity, auth, callback.code)
                 plugin.sessionStore.put(player.uniqueId.toString(), newSession)
 
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "login.success",
                         "handle" to newSession.handle
                     ))
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "login.failure",
                         "error" to (e.message ?: "Unknown error")
@@ -192,7 +192,7 @@ class StandardBooksCommand(
                 )
 
                 val result = plugin.atProtoClient.createDocument(session, document)
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "publish.success",
                         "title" to document.title,
@@ -200,7 +200,7 @@ class StandardBooksCommand(
                     ))
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "publish.failure",
                         "error" to (e.message ?: "Unknown error")
@@ -224,7 +224,7 @@ class StandardBooksCommand(
                 }
 
                 if (entries.isEmpty()) {
-                    withContext(Dispatchers.Main) {
+                    withContext(plugin.serverDispatcher) {
                         player.sendMessage(plugin.messages.prefixed("browse.empty"))
                     }
                     return@launch
@@ -233,12 +233,12 @@ class StandardBooksCommand(
                 val page = if (args.size > 1) args[1].toIntOrNull() ?: 0 else 0
                 val browsePage = BrowseGui.paginate(entries, page)
 
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     val inventory = plugin.browseGui.createInventory(browsePage)
                     player.openInventory(inventory)
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
                         "error" to (e.message ?: "Unknown error")
@@ -266,7 +266,7 @@ class StandardBooksCommand(
             try {
                 val entry = plugin.atProtoClient.getDocument(session, uri)
                 if (entry == null) {
-                    withContext(Dispatchers.Main) {
+                    withContext(plugin.serverDispatcher) {
                         player.sendMessage(plugin.messages.prefixed("read.not-found", "uri" to uri))
                     }
                     return@launch
@@ -278,11 +278,11 @@ class StandardBooksCommand(
                     ?: "Unknown"
                 val book = renderer.renderBook(entry.document, authorName)
 
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.openBook(book)
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
                         "error" to (e.message ?: "Unknown error")
@@ -303,7 +303,7 @@ class StandardBooksCommand(
         scope.launch {
             try {
                 val entries = plugin.atProtoClient.listDocuments(session)
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "status.books-published",
                         "count" to entries.size.toString()
@@ -317,7 +317,7 @@ class StandardBooksCommand(
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
                         "error" to (e.message ?: "Unknown error")
@@ -393,7 +393,7 @@ class StandardBooksCommand(
         scope.launch {
             try {
                 val success = plugin.atProtoClient.deleteRecord(session, atUri.collection, atUri.rkey)
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     if (success) {
                         player.sendMessage(plugin.messages.prefixed("delete.success", "uri" to uri))
                     } else {
@@ -401,7 +401,7 @@ class StandardBooksCommand(
                     }
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed("delete.failure", "error" to (e.message ?: "Unknown error")))
                 }
             }
@@ -473,11 +473,11 @@ class StandardBooksCommand(
                 )
 
                 plugin.atProtoClient.updateDocument(session, atUri.rkey, document)
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed("update.success", "uri" to uri))
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed("update.failure", "error" to (e.message ?: "Unknown error")))
                 }
             }
@@ -513,12 +513,12 @@ class StandardBooksCommand(
                 if (entries.isEmpty()) return@launch
 
                 val browsePage = BrowseGui.paginate(entries, page)
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     val inventory = plugin.browseGui.createInventory(browsePage)
                     player.openInventory(inventory)
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
                         "error" to (e.message ?: "Unknown error")
