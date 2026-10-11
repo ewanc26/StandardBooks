@@ -56,11 +56,20 @@ class OAuthServer(
                     }
 
                     val callback = OAuthCallback(code, state)
-                    pendingCallbacks[state]?.complete(callback)
+                    val pending = pendingCallbacks.remove(state)
+                    if (pending == null || !pending.complete(callback)) {
+                        call.respondText(
+                            "Login failed: unknown, expired, or already-used state.",
+                            ContentType.Text.Plain,
+                            HttpStatusCode.BadRequest
+                        )
+                        return@get
+                    }
 
                     call.respondText(
                         "Login successful! You can close this window and return to Minecraft.",
-                        ContentType.Text.Plain
+                        ContentType.Text.Plain,
+                        HttpStatusCode.OK
                     )
                 }
             }
