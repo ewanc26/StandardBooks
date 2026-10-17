@@ -16,6 +16,10 @@ import uk.ewancroft.standardbooks.gui.BrowseGui
 import uk.ewancroft.standardbooks.listener.BookListener
 import uk.ewancroft.standardbooks.message.Messages
 
+/** bStats plugin ID for StandardBooks, assigned when the plugin is registered on
+ * bstats.org. 0 means not registered: metrics stay off until it is set. */
+internal const val BSTATS_PLUGIN_ID: Int = 0
+
 class StandardBooksPlugin : JavaPlugin() {
 
     /** Dispatcher that returns Bukkit API work to Paper's server thread. */
@@ -84,10 +88,15 @@ class StandardBooksPlugin : JavaPlugin() {
 
         // PlaceholderAPI (optional)
         if (config.bstatsEnabled) {
-            try {
-                metrics = Metrics(this, 0) // bStats ID — replace with real one
-            } catch (e: Exception) {
-                logger.warning("Failed to initialise bStats: ${e.message}")
+            if (BSTATS_PLUGIN_ID == 0) {
+                // Not registered yet: skip rather than report under an unowned ID.
+                logger.info("bStats is enabled but no plugin ID is set; metrics are off.")
+            } else {
+                try {
+                    metrics = Metrics(this, BSTATS_PLUGIN_ID)
+                } catch (e: Exception) {
+                    logger.warning("Failed to initialise bStats: ${e.message}")
+                }
             }
         }
 
