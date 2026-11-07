@@ -20,4 +20,4 @@ PaperMC plugin to publish/read in-game books on the AT Protocol via Standard.sit
 
 ## Recent history
 
-Sync AGENTS.md from zincfox; Sync AGENTS.md from zincfox; Sync CONTRIBUTING.md from zincfox; Sync CONTRIBUTING.md from zincfox; Update issue template: config.yml
+Update issue template: config.yml
