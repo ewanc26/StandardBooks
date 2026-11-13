@@ -26,6 +26,11 @@ class StandardBooksCommand(
     private val plugin: StandardBooksPlugin
 ) : CommandExecutor, TabCompleter {
 
+    private fun userFacingError(error: Throwable): String {
+        plugin.logger.warning("StandardBooks request failed: ${error.javaClass.simpleName}")
+        return "Request failed; check the server log."
+    }
+
     private val scope = CoroutineScope(Dispatchers.IO)
 
     fun close() {
@@ -125,7 +130,7 @@ class StandardBooksCommand(
                 withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "login.failure",
-                        "error" to (e.message ?: "Unknown error")
+                        "error" to userFacingError(e)
                     ))
                 }
             }
@@ -208,7 +213,7 @@ class StandardBooksCommand(
                 withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "publish.failure",
-                        "error" to (e.message ?: "Unknown error")
+                        "error" to userFacingError(e)
                     ))
                 }
             }
@@ -246,7 +251,7 @@ class StandardBooksCommand(
                 withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
-                        "error" to (e.message ?: "Unknown error")
+                        "error" to userFacingError(e)
                     ))
                 }
             }
@@ -290,7 +295,7 @@ class StandardBooksCommand(
                 withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
-                        "error" to (e.message ?: "Unknown error")
+                        "error" to userFacingError(e)
                     ))
                 }
             }
@@ -325,7 +330,7 @@ class StandardBooksCommand(
                 withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
-                        "error" to (e.message ?: "Unknown error")
+                        "error" to userFacingError(e)
                     ))
                 }
             }
@@ -407,7 +412,7 @@ class StandardBooksCommand(
                 }
             } catch (e: Exception) {
                 withContext(plugin.serverDispatcher) {
-                    player.sendMessage(plugin.messages.prefixed("delete.failure", "error" to (e.message ?: "Unknown error")))
+                    player.sendMessage(plugin.messages.prefixed("delete.failure", "error" to userFacingError(e)))
                 }
             }
         }
@@ -483,7 +488,7 @@ class StandardBooksCommand(
                 }
             } catch (e: Exception) {
                 withContext(plugin.serverDispatcher) {
-                    player.sendMessage(plugin.messages.prefixed("update.failure", "error" to (e.message ?: "Unknown error")))
+                    player.sendMessage(plugin.messages.prefixed("update.failure", "error" to userFacingError(e)))
                 }
             }
         }
@@ -526,7 +531,7 @@ class StandardBooksCommand(
                 withContext(plugin.serverDispatcher) {
                     player.sendMessage(plugin.messages.prefixed(
                         "read.failure",
-                        "error" to (e.message ?: "Unknown error")
+                        "error" to userFacingError(e)
                     ))
                 }
             }

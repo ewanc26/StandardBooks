@@ -24,6 +24,11 @@ class BookListener(private val plugin: StandardBooksPlugin) : Listener {
 
     private val serializer = PlainTextComponentSerializer.plainText()
 
+    private fun userFacingError(error: Throwable): String {
+        plugin.logger.warning("StandardBooks auto-publish failed: ${error.javaClass.simpleName}")
+        return "Request failed; check the server log."
+    }
+
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
         val holder = event.inventory.holder
@@ -90,7 +95,7 @@ class BookListener(private val plugin: StandardBooksPlugin) : Listener {
                 }
             } catch (e: Exception) {
                 withContext(plugin.serverDispatcher) {
-                    player.sendMessage(plugin.messages.prefixed("publish.failure", "error" to (e.message ?: "Unknown error")))
+                    player.sendMessage(plugin.messages.prefixed("publish.failure", "error" to userFacingError(e)))
                 }
             }
         }
