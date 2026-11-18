@@ -1,3 +1,8 @@
+<p align="center">
+  <a href="https://github.com/ewanc26/StandardBooks/actions/workflows/ci.yml"><img src="https://github.com/ewanc26/StandardBooks/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/sponsors/ewanc26"><img src="https://img.shields.io/github/sponsors/ewanc26?logo=githubsponsors&logoColor=white&label=sponsors" alt="Sponsor"></a>
+</p>
+
 # StandardBooks
 
 A PaperMC plugin that publishes and reads in-game books on the AT Protocol via Standard.site.
@@ -145,6 +150,10 @@ If you find this project useful, consider supporting its development:
 [![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-30363D?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/ewanc26)
 [![Liberapay](https://img.shields.io/badge/Liberapay-A60000?style=for-the-badge&logo=liberapay&logoColor=white)](https://liberapay.com/ewanc26/)
 
-## License
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and the checks required before opening a pull request.
+
+## Licence
 
 AGPL-3.0-only
