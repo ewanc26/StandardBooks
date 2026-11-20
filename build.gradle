@@ -23,7 +23,7 @@ repositories {
 dependencies {
     compileOnly "io.papermc.paper:paper-api:26.1.2.build.72-stable"
 
-    compileOnly 'me.clip:placeholderapi:2.11.6'
+    compileOnly 'me.clip:placeholderapi:2.12.3'
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.21'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3'
